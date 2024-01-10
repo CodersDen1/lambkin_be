@@ -9,9 +9,28 @@
 | password                |        | actionType                |        | age                   |
 | dateOfBirth             |        | timestamp                 |        | gender                |
 | gender                  |        +---------------------------+        | bio                   |
-| bio                     |                                             | interests             |
-| location                |                                             | profileImageUrl       |
-| profileImageUrl         |                                             +-----------------------+
+| bio                     |                                             | interests             | 
+|                         |                                             +-----------------------+
 | registrationTimestamp   |
 |                         |
 +-------------------------+
+
+
+
+
+## __________  API Endpoints ______________ 
+
+## Users related
+root: "/users"
+
+
+## GET : " "        
+----> fetch all the users from the database
+## GET : "/{id}"      
+----> fetch the respected user with userId from the data base
+## POST : " "     
+---> Sign up request to the server
+## POST : "/login"    
+----> Sign in request to the server
+## PATCH : " "      
+----> update user details request

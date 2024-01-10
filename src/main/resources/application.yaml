@@ -1,0 +1,12 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    mongodb:
+      database: "lambkin_be_local"
+      uri: "mongodb+srv://admin:17Dec199612@cluster0.7dzn7fu.mongodb.net/?retryWrites=true&w=majority"
+      username: "admin"
+      password: "17Dec199612"
+
+
