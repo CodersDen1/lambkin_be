@@ -3,8 +3,8 @@ package com.example.lambkin_be.Users;
 
 import com.example.lambkin_be.Users.dtos.CreateUserRequest;
 import com.example.lambkin_be.Users.dtos.LoginUserRequest;
-import com.example.lambkin_be.Users.dtos.UserResponse;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,10 +13,12 @@ public class UsersService {
 
     private final ModelMapper modelMapper;
     private final UsersRepository usersRepository;
+    private  final PasswordEncoder passwordEncoder;
 
-    public UsersService(ModelMapper modelMapper , UsersRepository usersRepository) {
+    public UsersService(ModelMapper modelMapper , UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
         this.modelMapper = modelMapper;
         this.usersRepository = usersRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -26,9 +28,11 @@ public class UsersService {
 
              if (usersRepository.existsByEmail(newUser.getEmail())) {
                 throw new UserAlreadyExistException();
-            }
-        return usersRepository.save(newUser);
+             }
+            newUser.setPassword(passwordEncoder.encode(req.getPassword()));
+           return usersRepository.save(newUser);
     }
+
 
     public  Iterable<UsersEntity> getAllUser(){
         return  usersRepository.findAll();
@@ -40,10 +44,18 @@ public class UsersService {
     }
 
     public UsersEntity signInUser(LoginUserRequest request){
+        var user = usersRepository.findByEmail(request.getEmail());
         var userExist = usersRepository.existsByEmail(request.getEmail());
+        var passwordMatch = passwordEncoder.matches(request.getPassword(), user.getPassword());
+
         if(!userExist){
             throw new InvalidCredentialException(request.getEmail());
         }
+        if(!passwordMatch){
+            throw new InvalidCredentialException();
+        }
+
+
 
         return usersRepository.findByEmail(request.getEmail());
     }
@@ -71,6 +83,9 @@ public class UsersService {
     }
 
     public static class InvalidCredentialException extends  IllegalArgumentException{
+        public  InvalidCredentialException(){
+            super ("Invalid User credential");
+        }
         public InvalidCredentialException(String email){
             super("user with email does not exist");
         }
