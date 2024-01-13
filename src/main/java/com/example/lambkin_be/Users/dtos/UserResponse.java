@@ -12,4 +12,5 @@ public class UserResponse {
     private String gender;
     private  String bio;
     private Date dateOfBirth;
+    private String token;
 }
