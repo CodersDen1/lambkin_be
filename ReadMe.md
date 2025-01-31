@@ -16,7 +16,7 @@
 +-------------------------+
 
 
-
+This project is completed and firther updates will be pushed after another sprint
 
 ## __________  API Endpoints ______________ 
 
